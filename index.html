@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AIventory – World's First AI Agent Marketplace</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #fff;
+      background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+      overflow-x: hidden;
+    }
+    header {
+      padding: 3rem 2rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(30px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1.25rem;
+      color: #ccc;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+    }
+    .btn-primary {
+      background: linear-gradient(to right, #00f5a0, #00d9f5);
+      color: #000;
+      font-weight: 600;
+      padding: 1.1rem 2.5rem;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      font-size: 1.05rem;
+      transition: all 0.3s ease;
+      margin: 0.75rem;
+      box-shadow: 0 0 12px rgba(0, 245, 160, 0.35), 0 6px 12px rgba(0, 245, 160, 0.1);
+      backdrop-filter: blur(10px);
+      animation: pulseGlow 3s infinite;
+    }
+    .btn-primary:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 16px rgba(0, 217, 245, 0.45), 0 10px 20px rgba(0, 217, 245, 0.15);
+    }
+
+    @keyframes pulseGlow {
+      0% {
+        box-shadow: 0 0 12px rgba(0, 245, 160, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 20px rgba(0, 217, 245, 0.6);
+      }
+      100% {
+        box-shadow: 0 0 12px rgba(0, 245, 160, 0.3);
+      }
+    }
+
+    section {
+      padding: 5rem 2rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.015);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+      padding: 2rem 0;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1.5rem;
+      border-radius: 16px;
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    footer {
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.95rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .socials a {
+      color: #ccc;
+      margin: 0 1rem;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .socials a:hover {
+      color: #00f5a0;
+    }
+
+    /* AIVA Chat Bubble */
+    .aiva-bubble {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      width: 64px;
+      height: 64px;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+
+    .aiva-bubble:hover::after {
+      content: 'AIVA';
+      position: absolute;
+      top: -30px;
+      right: 0;
+      background: #fff;
+      color: #000;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .aiva-modal {
+      display: none;
+      position: fixed;
+      bottom: 100px;
+      right: 24px;
+      background: #111;
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 1.5rem;
+      border-radius: 16px;
+      max-width: 320px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      z-index: 1000;
+      color: #fff;
+    }
+
+    .aiva-modal p {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+      color: #ccc;
+    }
+
+    .aiva-modal .btn-notify {
+      background: linear-gradient(to right, #00f5a0, #00d9f5);
+      color: #000;
+      font-weight: 600;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .aiva-modal .btn-notify:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <header>
+    <h1>AIventory</h1>
+    <p>The world’s first AI Agent Marketplace. Discover, deploy & dominate with intelligent agents for sales, support, insights & more.</p>
+    <a href="#waitlist"><button class="btn-primary">Join Early Access</button></a>
+    <a href="#creator"><button class="btn-primary">Add Your AI Agent</button></a>
+  </header>
+
+  <!-- What is AIventory -->
+  <section>
+    <h2 class="section-title">What is AIventory?</h2>
+    <p>A marketplace where AI agents are not just tools — they’re power multipliers. Built for visionary founders and expert creators.</p>
+    <div class="grid">
+      <div class="card"><h3>Sales & Lead Agents</h3><p>Book meetings. Nurture leads. Close deals. All on autopilot.</p></div>
+      <div class="card"><h3>Support Agents</h3><p>Handle 24/7 queries with personality and precision.</p></div>
+      <div class="card"><h3>Insight Agents</h3><p>Analyze business data and turn it into decision-ready insight.</p></div>
+    </div>
+  </section>
+
+  <!-- Why AI Agents Matter -->
+  <section>
+    <h2 class="section-title">Why AI Agents Matter</h2>
+    <p>Real-time automation. Scalable performance. A future-proof workforce.</p>
+    <div class="grid">
+      <div class="card"><h3>92%</h3><p>of startups say AI boosts productivity.</p></div>
+      <div class="card"><h3>40%</h3><p>average increase in lead conversion using AI agents.</p></div>
+      <div class="card"><h3>24/7</h3><p>always-on support, without human limits.</p></div>
+    </div>
+  </section>
+
+  <!-- Split Section: Founders vs Creators -->
+  <section>
+    <h2 class="section-title">For Founders & Creators</h2>
+    <div class="grid">
+      <div class="card"><h3>🚀 Founders</h3><p>Plug in agents that grow your startup while you sleep. From lead gen to support.</p></div>
+      <div class="card"><h3>🧠 Creators</h3><p>Build & monetize your own AI agents. Get listed, go live, and get paid.</p></div>
+    </div>
+  </section>
+
+  <!-- Creator Launch Pack -->
+  <section id="creator">
+    <h2 class="section-title">Creator Launch Pack</h2>
+    <p>Want to list your agent on AIventory? This is your gateway to launch.</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeYsBPoWmZrXzqsGJlTwZ9LTsNHwOtt3I5AMcZYCam7RL-L8A/viewform" target="_blank">
+      <button class="btn-primary">Apply to Launch Your AI Agent</button>
+    </a>
+  </section>
+
+  <!-- Early Access CTA -->
+  <section id="waitlist">
+    <h2 class="section-title">Get Early Access</h2>
+    <p>We’re manually onboarding our first 100 users. Join the waitlist for front-row access.</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSc2Flh7aGSOUh-xVmfhqKQlTD_sHXjaqh83UGtOm28cZQYu5A/viewform" target="_blank">
+      <button class="btn-primary">Join the Waitlist</button>
+    </a>
+  </section>
+
+  <!-- Trust / Momentum -->
+  <section>
+    <h2 class="section-title">Who’s Talking</h2>
+    <p>Join a growing movement of forward-thinking founders, developers & creators building the future with AI agents.</p>
+    <div class="grid">
+      <div class="card"><p>“This is the future of automation — finally done right.”</p></div>
+      <div class="card"><p>“Plug-and-play agents for every startup? Game changer.”</p></div>
+      <div class="card"><p>“It’s like having a 10-person team for $10/month.”</p></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="socials">
+      <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+      <a href="mailto:aiiventory@gmail.com">Contact</a>
+      <a href="https://x.com" target="_blank">X (Twitter)</a>
+    </div>
+    <p>© 2025 AIventory. All rights reserved.</p>
+  </footer>
+
+  <!-- AIVA Bubble -->
+  <div class="aiva-bubble" onclick="toggleAivaModal()">💬</div>
+  <div class="aiva-modal" id="aivaModal">
+    <p><strong>AIventory</strong> is currently preparing for its official launch. Soon, you’ll be able to explore the world’s first AI Agent Marketplace — a platform that will help you discover and deploy the perfect AI agents to solve your business needs.</p>
+    <a class="btn-notify" href="https://docs.google.com/forms/d/e/1FAIpQLSc2Flh7aGSOUh-xVmfhqKQlTD_sHXjaqh83UGtOm28cZQYu5A/viewform" target="_blank">Notify Me</a>
+  </div>
+
+  <script>
+    function toggleAivaModal() {
+      const modal = document.getElementById('aivaModal');
+      modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+    }
+
+    document.addEventListener('click', function (event) {
+      const modal = document.getElementById('aivaModal');
+      const bubble = document.querySelector('.aiva-bubble');
+      if (!modal.contains(event.target) && !bubble.contains(event.target)) {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>
